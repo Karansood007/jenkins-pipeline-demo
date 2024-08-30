@@ -1,72 +1,91 @@
 pipeline {
     agent any
-    
+
     environment {
-        GIT_REPO = 'https://github.com/Karansood007/jenkins-pipeline-demo.git'
-        EMAIL_RECIPIENT = 'karansood107@gmail.com'
+        REPOSITORY_URL = "https://github.com/Karansood007/jenkins-pipeline-demo.git"
+        STAGING_ENV = "staging"
+        PROD_ENV = "production_karan_sood"
     }
-    
+
     stages {
         stage('Build') {
             steps {
-                echo 'Building the code...'
-                bat 'mvn clean package' // Replace with the actual build command for Windows
+                echo "Initiating build process using Maven for code compilation and packaging."
+                echo "Source code repository: ${env.REPOSITORY_URL}"
+                // Utilize Maven to compile and package the application
+                // For example: bat 'mvn clean install'
             }
         }
-        
-        stage('Unit and Integration Tests') {
+
+        stage('Unit Testing and Integration Testing') {
             steps {
-                echo 'Running Unit and Integration Tests...'
-                bat 'mvn test' // Replace with actual test command for Windows
+                echo "Executing unit tests to validate individual components."
+                // Command to run unit tests
+                // For example: bat 'mvn test'
+
+                echo "Conducting integration tests to ensure component interoperability."
+                // Command for running integration tests
+                // For example: bat 'newman run collection.json'
             }
         }
-        
-        stage('Code Analysis') {
+
+        stage('Static Code Analysis') {
             steps {
-                echo 'Running Code Analysis...'
-                bat 'sonar-scanner' // Replace with actual SonarQube command for Windows
+                echo "Performing static code analysis using SonarQube to enforce code quality."
+                // Integrate SonarQube or a similar tool for code analysis
+                // For example: bat 'sonar-scanner'
             }
         }
-        
-        stage('Security Scan') {
+
+        stage('Security Vulnerability Scan') {
             steps {
-                echo 'Performing Security Scan...'
-                bat 'dependency-check --project myapp --scan C:\\path\\to\\your\\code' // Replace with actual security scan command for Windows
+                echo "Executing security vulnerability scan with OWASP ZAP or a similar tool."
+                // Command to run security scan
+                // For example: bat 'zap-cli scan --url http://localhost:8080'
             }
         }
-        
-        stage('Deploy to Staging') {
+
+        stage('Staging Deployment') {
             steps {
-                echo 'Deploying to Staging...'
-                bat 'aws deploy ...' // Replace with actual deployment command for Windows
+                echo "Deploying the application to the staging environment on AWS EC2 or similar platform."
+                // Command to deploy to staging
+                // For example: bat 'aws deploy create-deployment --application-name MyApp --deployment-group-name Staging --s3-location s3://bucket/app.zip'
             }
         }
-        
-        stage('Integration Tests on Staging') {
+
+        stage('Staging Environment Testing') {
             steps {
-                echo 'Running Integration Tests on Staging...'
-                bat 'run integration tests' // Replace with actual integration test command for Windows
+                echo "Executing integration tests in the staging environment to validate the deployment."
+                // Command to run tests on staging
+                // For example: bat 'newman run staging-collection.json'
             }
         }
-        
-        stage('Deploy to Production') {
+
+        stage('Production Deployment') {
             steps {
-                echo 'Deploying to Production...'
-                bat 'aws deploy ...' // Replace with actual production deployment command for Windows
+                echo "Deploying the application to the production environment on AWS EC2 or similar platform."
+                // Command to deploy to production
+                // For example: bat 'aws deploy create-deployment --application-name MyApp --deployment-group-name Production --s3-location s3://bucket/app.zip'
             }
         }
     }
-    
+
     post {
-        success {
-            mail to: "${EMAIL_RECIPIENT}",
-                 subject: "Build Success - ${env.JOB_NAME}",
-                 body: "The build for ${GIT_REPO} succeeded. Check Jenkins for details."
-        }
         failure {
-            mail to: "${EMAIL_RECIPIENT}",
-                 subject: "Build Failed - ${env.JOB_NAME}",
-                 body: "The build for ${GIT_REPO} failed. Check Jenkins for details."
+            echo "Pipeline encountered an error. Sending failure notification email."
+            mail(
+                subject: 'Pipeline Execution Failed',
+                body: "The Jenkins pipeline for your project encountered a failure. Please review the logs for further information.",
+                to: "karansood107@gmail.com"
+            )
+        }
+        success {
+            echo "Pipeline completed successfully. Sending success notification email."
+            mail(
+                subject: 'Pipeline Execution Successful',
+                body: "The Jenkins pipeline for your project completed successfully.",
+                to: "karansood107@gmail.com"
+            )
         }
     }
 }
