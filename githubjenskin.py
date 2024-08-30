@@ -10,49 +10,49 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the code...'
-                sh 'mvn clean package' // Replace with the actual build command
+                bat 'mvn clean package' // Replace with the actual build command for Windows
             }
         }
         
         stage('Unit and Integration Tests') {
             steps {
                 echo 'Running Unit and Integration Tests...'
-                sh 'mvn test' // Replace with actual test command
+                bat 'mvn test' // Replace with actual test command for Windows
             }
         }
         
         stage('Code Analysis') {
             steps {
                 echo 'Running Code Analysis...'
-                sh 'sonar-scanner' // Replace with actual SonarQube command
+                bat 'sonar-scanner' // Replace with actual SonarQube command for Windows
             }
         }
         
         stage('Security Scan') {
             steps {
                 echo 'Performing Security Scan...'
-                sh 'dependency-check --project myapp --scan /path/to/your/code' // Replace with actual security scan command
+                bat 'dependency-check --project myapp --scan C:\\path\\to\\your\\code' // Replace with actual security scan command for Windows
             }
         }
         
         stage('Deploy to Staging') {
             steps {
                 echo 'Deploying to Staging...'
-                sh 'aws deploy ...' // Replace with actual deployment command
+                bat 'aws deploy ...' // Replace with actual deployment command for Windows
             }
         }
         
         stage('Integration Tests on Staging') {
             steps {
                 echo 'Running Integration Tests on Staging...'
-                sh 'run integration tests' // Replace with actual integration test command
+                bat 'run integration tests' // Replace with actual integration test command for Windows
             }
         }
         
         stage('Deploy to Production') {
             steps {
                 echo 'Deploying to Production...'
-                sh 'aws deploy ...' // Replace with actual production deployment command
+                bat 'aws deploy ...' // Replace with actual production deployment command for Windows
             }
         }
     }
