@@ -61,14 +61,12 @@ pipeline {
         success {
             mail to: "${EMAIL_RECIPIENT}",
                  subject: "Build Success - ${env.JOB_NAME}",
-                 body: "The build for ${GIT_REPO} succeeded.",
-                 attachLog: true
+                 body: "The build for ${GIT_REPO} succeeded. Check Jenkins for details."
         }
         failure {
             mail to: "${EMAIL_RECIPIENT}",
                  subject: "Build Failed - ${env.JOB_NAME}",
-                 body: "The build for ${GIT_REPO} failed. Check the logs for details.",
-                 attachLog: true
+                 body: "The build for ${GIT_REPO} failed. Check Jenkins for details."
         }
     }
 }
