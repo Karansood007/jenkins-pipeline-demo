@@ -50,6 +50,7 @@ pipeline {
                 echo "Deploying the application to the staging environment on AWS EC2 or similar platform."
                 // Command to deploy to staging
                 // For example: bat 'aws deploy create-deployment --application-name MyApp --deployment-group-name Staging --s3-location s3://bucket/app.zip'
+                // just some random change to the github file
             }
         }
 
